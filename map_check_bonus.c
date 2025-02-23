@@ -14,7 +14,7 @@
 
 void	check_pl_access(char **m, t_mystruct *s, size_t x, size_t y)
 {
-	if (x < 0 || x >= s->x || y < 0 || y >= s->y
+	if (x >= s->x || y >= s->y
 		|| m[y][x] == 'F' || m[y][x] == '1' || m[y][x] == 'K')
 		return ;
 	if (m[y][x] == 'C')
