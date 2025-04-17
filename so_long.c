@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakherra <aakherra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: developer <developer@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 08:23:16 by aakherra          #+#    #+#             */
-/*   Updated: 2025/02/18 09:46:52 by aakherra         ###   ########.fr       */
+/*   Updated: 2025/04/16 22:36:25 by developer        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	check_ext(char *s)
+{
+	char	*ext;
+
+	ext = ft_strchr(s, '.');
+	if (!ext || ft_strcmp(ext, ".ber"))
+		exit_with_err("Invalid file extension", 0, NULL);
+}
 
 void	is_valid(char **m, t_points *size, t_points *pl_cords, size_t total)
 {
@@ -72,7 +81,7 @@ void	check_map(t_points *size, char *file, int fd)
 	m = allocate(size->y, file);
 	if (!m)
 		exit_with_err("", 1, m);
-	set_window(m, size, pl_cords, t[1]);
+	set_window(m, size, pl_cords, &t[1]);
 }
 
 int	main(int ac, char **av)

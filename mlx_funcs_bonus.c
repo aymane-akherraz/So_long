@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx_funcs_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakherra <aakherra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: developer <developer@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 21:21:41 by aakherra          #+#    #+#             */
-/*   Updated: 2025/02/18 09:01:00 by aakherra         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:36:12 by developer        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ int	render_next_frame(t_data *data)
 	return (0);
 }
 
-void	load_textures(void *mlx, int s, int t, void **arr)
+void	load_textures(t_data *data, int s, void **arr)
 {
-	int		i;
+	int		t;
 	char	d[18];
 
+	t = TILE_SIZE;
 	if (s == BG)
 		ft_strlcpy(d, "textures/bg/0.xpm", 18);
 	else if (s == COLS)
@@ -53,95 +54,57 @@ void	load_textures(void *mlx, int s, int t, void **arr)
 	else
 	{
 		ft_strlcpy(d, "textures/en/0.xpm", 18);
-		*arr = mlx_xpm_file_to_image(mlx, d, &t, &t);
+		*arr = mlx_xpm_file_to_image(data->mlx, d, &t, &t);
+		if (!(*arr))
+			free_and_destroy(data, "Failed to load image");
 		return ;
 	}
-	i = 0;
-	while (i < s)
-	{
-		arr[i++] = mlx_xpm_file_to_image(mlx, d, &t, &t);
-		d[12]++;
-	}
+	load_img(data, s, d, arr);
 }
 
-void	put_to_win(t_points *size, t_data *d, t_points *c, t_points *l)
+void	put_to_win(t_points *size, t_data *d, t_points *c)
 {
 	while (c->y < size->y)
 	{
 		c->x = 0;
-		l->x = 0;
 		while (c->x < size->x)
 		{
 			if (d->m[c->y][c->x] == '0' || d->m[c->y][c->x] == '1')
 				mlx_put_image_to_window(d->mlx, d->win,
-					d->bg_sprites[d->m[c->y][c->x] - '0'], l->x, l->y);
+					d->bg_sprites[d->m[c->y][c->x] - '0'],
+					c->x * TILE_SIZE, c->y * TILE_SIZE);
 			else if (d->m[c->y][c->x] == 'P')
 				mlx_put_image_to_window(d->mlx, d->win, d->ply_sprites[d->dir],
-					l->x, l->y);
+					c->x * TILE_SIZE, c->y * TILE_SIZE);
 			else if (d->m[c->y][c->x] == 'C')
 				mlx_put_image_to_window(d->mlx, d->win, d->cols_sprites[0],
-					l->x, l->y);
+					c->x * TILE_SIZE, c->y * TILE_SIZE);
 			else if (d->m[c->y][c->x] == 'E')
-				set_exit(d, l->x, l->y);
+				set_exit(d, c->x * TILE_SIZE, c->y * TILE_SIZE);
 			else if (d->m[c->y][c->x] == 'K')
-				mlx_put_image_to_window(d->mlx, d->win, d->enemy, l->x, l->y);
+				mlx_put_image_to_window(d->mlx, d->win, d->enemy,
+					c->x * TILE_SIZE, c->y * TILE_SIZE);
 			c->x++;
-			l->x += TILE_SIZE;
 		}
 		c->y++;
-		l->y += TILE_SIZE;
 	}
 }
 
-void	set_window(char **m, t_points *size, t_points *pl_c, size_t t)
+void	set_window(char **m, t_points *size, t_points *pl_c, size_t *t)
 {
 	t_data		data;
 
-	data.mlx = mlx_init();
-	data.win = mlx_new_window(data.mlx, (size->x * TILE_SIZE),
-			(size->y * TILE_SIZE), "So_long");
-	load_textures(data.mlx, BG, TILE_SIZE, data.bg_sprites);
-	load_textures(data.mlx, COLS, TILE_SIZE, data.cols_sprites);
-	load_textures(data.mlx, EX, TILE_SIZE, data.ex_sprites);
-	load_textures(data.mlx, PLY, TILE_SIZE, data.ply_sprites);
-	load_textures(data.mlx, 1, TILE_SIZE, &(data.enemy));
 	data.m = m;
-	data.pl_cords = pl_c;
-	data.coll_count = 0;
-	data.total_coll = t;
-	data.size = size;
-	data.moves = 0;
-	data.at_exit = false;
-	data.dir = 0;
-	data.i = 0;
+	init_data(&data, size, pl_c, t);
+	init_sprites(&data);
+	load_textures(&data, BG, data.bg_sprites);
+	load_textures(&data, COLS, data.cols_sprites);
+	load_textures(&data, EX, data.ex_sprites);
+	load_textures(&data, PLY, data.ply_sprites);
+	load_textures(&data, 1, &(data.enemy));
 	mlx_hook(data.win, DestroyNotify, NoEventMask, &on_destroy, &data);
 	mlx_hook(data.win, KeyPress, KeyPressMask, &handle_input, &data);
 	display_win(&data);
 	mlx_loop_hook(data.mlx, &render_next_frame, &data);
 	mlx_loop(data.mlx);
-}
-
-int	on_destroy(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < BG)
-		mlx_destroy_image(data->mlx, data->bg_sprites[i++]);
-	i = 0;
-	while (i < EX)
-		mlx_destroy_image(data->mlx, data->ex_sprites[i++]);
-	i = 0;
-	while (i < PLY)
-		mlx_destroy_image(data->mlx, data->ply_sprites[i++]);
-	i = 0;
-	while (i < COLS)
-		mlx_destroy_image(data->mlx, data->cols_sprites[i++]);
-	mlx_destroy_image(data->mlx, data->enemy);
-	mlx_destroy_window(data->mlx, data->win);
-	mlx_destroy_display(data->mlx);
-	free(data->mlx);
-	free_m(data->m);
-	exit(0);
-	return (0);
 }

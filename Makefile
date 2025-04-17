@@ -2,9 +2,9 @@ NAME = so_long
 BONUS = so_long_bonus
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SHR_OBJ = so_long.c get_next_line_utils.c get_next_line.c free_funcs.c helper.c additonal_funcs.c
+SHR_OBJ = so_long.c get_next_line_utils.c get_next_line.c free_funcs.c helper.c additonal_funcs.c init_funcs.c
 SRC = map_check.c mlx_funcs.c $(SHR_OBJ)
-BSRC = mlx_funcs_bonus.c map_check_bonus.c ft_itoa.c $(SHR_OBJ)
+BSRC = mlx_funcs_bonus.c map_check_bonus.c ft_itoa.c $(SHR_OBJ) helper_bonus.c
 OBJ = $(SRC:.c=.o)
 BOBJ = $(BSRC:.c=.o)
 

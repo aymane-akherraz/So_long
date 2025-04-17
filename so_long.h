@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakherra <aakherra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: developer <developer@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 08:25:22 by aakherra          #+#    #+#             */
-/*   Updated: 2025/02/18 09:36:38 by aakherra         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:13:47 by developer        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ typedef struct mystruct
 	size_t		y;
 }	t_mystruct;
 
-typedef struct s_data {
+typedef struct s_data
+{
 	int			dir;
 	char		**m;
 	void		*mlx;
@@ -92,20 +93,23 @@ char	*ft_substr(char const *s, size_t start, size_t len);
 char	*my_strdup(char *s);
 char	**allocate(size_t y, char *file);
 void	ft_putstr(char *s, int fd);
-void	load_textures(void *mlx, int s, int t, void **arr);
+void	load_textures(t_data *data, int s, void **arr);
+void	load_img(t_data *data, int s, char *d, void **arr);
+void	init_sprites(t_data *data);
 void	free_all(char **p, size_t j, int fd);
 void	free_and_exit(int fd, char *s);
+void	free_and_destroy(t_data *data, char *s);
 void	exit_with_err(char *s, int f, char **m);
+void	init_data(t_data *data, t_points *size, t_points *pl_cords, size_t *t);
 void	helper(char **m, t_points *cords, size_t *t, t_points *pl_cords);
-void	set_window(char **m, t_points *size, t_points *pl_cords, size_t t);
+void	set_window(char **m, t_points *size, t_points *pl_cords, size_t *t);
 void	check_pl_access(char **m, t_mystruct *s, size_t x, size_t y);
 void	move_ply(t_data *data, size_t y, size_t x, int dir);
 void	add_check(char c, size_t *t, char **m);
 void	check_ext(char *s);
 void	set_exit(t_data *data, int x, int y);
 void	check_dir(t_data *data);
-void	put_to_win(t_points *size, t_data *data, t_points *cords, t_points *l);
-void	set_window(char **m, t_points *size, t_points *pl_cords, size_t t);
+void	put_to_win(t_points *size, t_data *data, t_points *cords);
 void	free_m(char **m);
 void	display_win(t_data *data);
 void	ft_putnbr(size_t n);

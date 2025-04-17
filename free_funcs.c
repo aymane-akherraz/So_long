@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_funcs.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakherra <aakherra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: developer <developer@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 10:12:22 by aakherra          #+#    #+#             */
-/*   Updated: 2025/02/18 09:44:44 by aakherra         ###   ########.fr       */
+/*   Updated: 2025/04/17 00:17:04 by developer        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,10 @@ void	free_and_exit(int fd, char *s)
 		s = get_next_line(fd);
 	}
 	exit_with_err("Invalid map", 0, NULL);
+}
+
+void	free_and_destroy(t_data *data, char *s)
+{
+	ft_putstr(s, 2);
+	on_destroy(data);
 }

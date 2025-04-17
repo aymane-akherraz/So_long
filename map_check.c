@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   map_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakherra <aakherra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: developer <developer@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:41:00 by aakherra          #+#    #+#             */
-/*   Updated: 2025/02/10 09:42:32 by aakherra         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:15:48 by developer        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	move_ply(t_data *data, size_t y, size_t x, int dir)
+{
+	t_points	cords;
+
+	if (data->m[y][x] == 'C')
+		data->coll_count++;
+	else if (data->m[y][x] == 'E')
+	{
+		if (data->coll_count == data->total_coll)
+			on_destroy(data);
+		else
+			data->at_exit = true;
+	}
+	if (data->m[y][x] != '1')
+	{
+		if (data->m[data->pl_cords->y][data->pl_cords->x] != 'E')
+			data->m[data->pl_cords->y][data->pl_cords->x] = '0';
+		else
+			data->at_exit = false;
+		if (data->at_exit == false)
+			data->m[y][x] = 'P';
+		data->dir = dir;
+		check_dir(data);
+		put_to_win(data->size, data, &cords);
+	}
+}
 
 void	check_pl_access(char **m, t_mystruct *s, size_t x, size_t y)
 {

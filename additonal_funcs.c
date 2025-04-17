@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   additonal_funcs.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakherra <aakherra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: developer <developer@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 08:57:55 by aakherra          #+#    #+#             */
-/*   Updated: 2025/02/10 14:06:51 by aakherra         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:15:22 by developer        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,4 @@ int	ft_strcmp(const char *s1, const char *s2)
 	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
-
-void	check_ext(char *s)
-{
-	char	*ext;
-
-	ext = ft_strchr(s, '.');
-	if (!ext || ft_strcmp(ext, ".ber"))
-		exit_with_err("Invalid file extension", 0, NULL);
 }

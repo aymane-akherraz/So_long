@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_check_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aakherra <aakherra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: developer <developer@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 09:52:59 by aakherra          #+#    #+#             */
-/*   Updated: 2025/02/18 09:01:12 by aakherra         ###   ########.fr       */
+/*   Updated: 2025/04/17 00:49:36 by developer        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,9 @@ void	display_win(t_data *data)
 {
 	char		*s;
 	t_points	cords;
-	t_points	location;
 
 	cords.y = 0;
-	location.y = 0;
-	put_to_win(data->size, data, &cords, &location);
+	put_to_win(data->size, data, &cords);
 	s = ft_itoa((int)data->moves);
 	mlx_set_font(data->mlx, data->win, "10*20");
 	mlx_string_put(data->mlx, data->win, 10, 20, 0xffffff, s);
